@@ -57,7 +57,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".utils.networkChecker.NetworkChangeReceiver"/> <!-- about facebook login -->
+        <receiver android:name=".utils.networkChecker.NetworkChangeReceiver"/>
     </application>
 
 </manifest>
