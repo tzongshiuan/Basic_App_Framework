@@ -21,9 +21,6 @@ Build a basic framework and import into new projects every time to speed up the 
 
 ### [Custom containers](https://github.com/markdown-it/markdown-it-container)
 
-::: warning
-*here be dragons*
-:::
 
 ## Author Information
 ![HsuanPhoto](https://i.imgur.com/T50aHcd.jpg)
