@@ -19,6 +19,7 @@ import com.hsuanparty.basic_app.R
 import com.hsuanparty.basic_app.di.Injectable
 import com.hsuanparty.basic_app.model.PreferencesHelper
 import com.hsuanparty.basic_app.utils.Constants
+import com.hsuanparty.basic_app.utils.LeetCode
 import com.hsuanparty.basic_app.utils.LogMessage
 import com.hsuanparty.basic_app.utils.SimpleDelayTask
 import com.hsuanparty.basic_app.utils.networkChecker.NetworkChangeReceiver
@@ -106,6 +107,9 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Injectable
         // Only show log message in debug mode
         Constants.IS_DEBUG_MODE = BuildConfig.DEBUG
         LogMessage.isShowLog = BuildConfig.DEBUG
+
+        val leetCode = LeetCode()
+        leetCode.start()
     }
 
     override fun onStart() {
