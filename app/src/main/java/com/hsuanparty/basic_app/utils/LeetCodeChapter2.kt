@@ -6,4 +6,9 @@ package com.hsuanparty.basic_app.utils
  * Description:
  */
 class LeetCodeChapter2 {
+    fun start() {
+        // 2.1
+    }
+
+    // 2.1
 }

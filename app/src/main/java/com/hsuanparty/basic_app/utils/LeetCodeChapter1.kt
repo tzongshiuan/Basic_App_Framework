@@ -55,15 +55,15 @@ class LeetCodeChapter1 {
 //        }
 
         // 1.8 Zero Matrix
-        val afterRotate = zeroMatrix(
-            arrayOf(intArrayOf(1, 2, 3, 0), intArrayOf(4, 5, 6, 7), intArrayOf(8, 9, 9, 11)))
-        for (i in afterRotate.indices) {
-            var print = ""
-            for (j in afterRotate[i].indices) {
-                print += afterRotate[i][j]
-            }
-            Log.d(TAG, "row $i: $print")
-        }
+//        val afterRotate = zeroMatrix(
+//            arrayOf(intArrayOf(1, 2, 3, 0), intArrayOf(4, 5, 6, 7), intArrayOf(8, 9, 9, 11)))
+//        for (i in afterRotate.indices) {
+//            var print = ""
+//            for (j in afterRotate[i].indices) {
+//                print += afterRotate[i][j]
+//            }
+//            Log.d(TAG, "row $i: $print")
+//        }
 
         // 1.9 String Rotation
         Log.d(TAG, "is String rotation: ${isStringRotation("abcde", "aebcd")}")
@@ -433,7 +433,37 @@ class LeetCodeChapter1 {
     }
 
     private fun isStringRotation(s1: String, s2: String): Boolean {
-        return true
+        if (s1.length != s2.length) {
+            return false
+        }
+
+        // solution 1
+//        if (s1 == s2) {
+//            return true
+//        }
+//
+//        for (i in 1 until s1.length) {
+//            val a = s1.substring(0, i)
+//            val b = s1.substring(i)
+//            val c = s2.substring(0, i)
+//            val d = s2.substring(i)
+//            if (a == d && b == c) {
+//                return true
+//            }
+//        }
+//
+//        return false
+
+        // solution 2
+        val len = s1.length
+        if (len == s2.length && len > 0) {
+            val xyxy = s1 + s1
+            if (isSubString(xyxy, s2)) {
+                return true
+            }
+        }
+
+        return false
     }
 
     companion object {
