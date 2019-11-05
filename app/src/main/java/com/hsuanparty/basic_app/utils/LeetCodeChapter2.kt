@@ -74,24 +74,57 @@ class LeetCodeChapter2 {
 //        printResult(addLists(test1, test2)!!)
 
         // 2.6 Palindrome
-        val test1 = Node(1).also {
-            it.appendToTail(2)
-            it.appendToTail(3)
-            it.appendToTail(2)
-            it.appendToTail(1)
-        }
-        val test2 = Node(5).also {
-            it.appendToTail(9)
-            it.appendToTail(3)
-            it.appendToTail(3)
-            it.appendToTail(3)
-        }
-        Log.d(TAG, "test1 is palindrome: ${isPalinDrome(test1)}")
-        Log.d(TAG, "test2 is palindrome: ${isPalinDrome(test2)}")
+//        val test1 = Node(1).also {
+//            it.appendToTail(2)
+//            it.appendToTail(3)
+//            it.appendToTail(2)
+//            it.appendToTail(1)
+//        }
+//        val test2 = Node(5).also {
+//            it.appendToTail(9)
+//            it.appendToTail(3)
+//            it.appendToTail(3)
+//            it.appendToTail(3)
+//        }
+//        Log.d(TAG, "test1 is palindrome: ${isPalinDrome(test1)}")
+//        Log.d(TAG, "test2 is palindrome: ${isPalinDrome(test2)}")
 
         // 2.7 Intersection
+//        val node = Node(2)
+//        val test1 = Node(7).also {
+//            it.appendToTail(1)
+//            it.appendToTail(6)
+//        }
+//        var test3 = test1
+//        while (test3.next != null) {
+//            test3 = test3.next!!
+//        }
+//        test3.next = node
+//
+//        val test2 = Node(5).also {
+//            it.appendToTail(9)
+//            it.appendToTail(3)
+//        }
+//        test3 = test2
+//        while (test3.next != null) {
+//            test3 = test3.next!!
+//        }
+//        test3.next = node
+//        Log.d(TAG, "intersect node: ${findIntersect(test1, test2)}")
 
         // 2.8 Loop Detection
+        val test = Node(7).also {
+            it.appendToTail(1)
+            it.appendToTail(6)
+        }
+
+        var test3 = test
+        while (test3.next != null) {
+            test3 = test3.next!!
+        }
+        test3.next = test
+
+        Log.d(TAG, "Loop detection node: ${findLoopBegin(test3)?.data}")
     }
 
     // 2.1
@@ -404,9 +437,26 @@ class LeetCodeChapter2 {
         return head
     }
 
-    class Result {
-        var node: Node? = null
-        var isPalinDrome = false
+    class Result(node: Node?, isPalinDrome: Boolean) {
+        var node: Node? = node
+        var isPalinDrome = isPalinDrome
+    }
+    private fun isPalindromRecursive(node: Node?, length: Int): Result {
+        if (node == null || length == 0) {
+            return Result(node, true)
+        } else if (length == 1) {
+            return Result(node.next, true)
+        }
+
+        val result = isPalindromRecursive(node.next, length - 2)
+
+        if (!result.isPalinDrome || result.node == null) {
+            return result
+        }
+
+        result.isPalinDrome = (node.data == result.node?.data)
+        result.node = result.node?.next
+        return result
     }
 
     private fun isPalinDrome(head: Node?): Boolean {
@@ -415,37 +465,114 @@ class LeetCodeChapter2 {
 //        return isListEqual(head, reverse)
 
         // solution 2, iterative through stack
-        val stack = Stack<Int>()
-        var fast = head
-        var slow = head
-
-        while (fast != null && fast.next != null) {
-            stack.push(slow?.data)
-            slow = slow?.next
-            fast = fast.next?.next
-        }
-
-        if (fast != null) {
-            slow = slow?.next
-        }
-
-        while (slow != null) {
-            val value = stack.pop()
-            if (slow.data != value) {
-                return false
-            }
-            slow = slow.next
-        }
-
-        return true
+//        val stack = Stack<Int>()
+//        var fast = head
+//        var slow = head
+//
+//        while (fast != null && fast.next != null) {
+//            stack.push(slow?.data)
+//            slow = slow?.next
+//            fast = fast.next?.next
+//        }
+//
+//        if (fast != null) {
+//            slow = slow?.next
+//        }
+//
+//        while (slow != null) {
+//            val value = stack.pop()
+//            if (slow.data != value) {
+//                return false
+//            }
+//            slow = slow.next
+//        }
+//
+//        return true
 
         // solution 3, recursive approach
-//        return true
+        val len = getLength(head)
+        val result = isPalindromRecursive(head, len)
+        return result.isPalinDrome
     }
 
     // 2.7
+    class Info(tail: Node?, length: Int) {
+        var tail = tail
+        var length = length
+    }
+
+    private fun getTailAndSize(list: Node?): Info? {
+        if (list == null) {
+            return null
+        }
+
+        var size = 1
+        var current: Node? = list
+        while (current?.next != null) {
+            size++
+            current = current.next
+        }
+
+        return Info(current, size)
+    }
+
+    private fun findIntersect(list1: Node?, list2: Node?): Node? {
+        if (list1 == null || list2 == null) {
+            return null
+        }
+
+        val tail1: Info? = getTailAndSize(list1)
+        var tail2: Info? = getTailAndSize(list2)
+
+        // check tail pointer
+        if (tail1 != tail2) {
+            return null
+        }
+
+        var shorter: Node? = if (tail1?.length!! < tail2?.length!!) list1 else list2
+        var longer: Node? = if (tail1.length < tail2.length) list2 else list1
+
+        for (i in 0 until Math.abs(tail1.length - tail2.length)) {
+            longer = longer?.next
+        }
+
+        if (shorter != longer) {
+            shorter = shorter?.next
+            longer = longer?.next
+        }
+
+        return longer
+    }
 
     // 2.8
+    private fun findLoopBegin(list: Node?): Node? {
+        if (list == null) {
+            return null
+        }
+
+        var fast = list
+        var slow = list
+        while (fast != null && fast.next != null) {
+            slow = slow?.next
+            fast = fast.next?.next
+
+            if (slow == fast) {
+                break
+            }
+        }
+
+        if (fast == null || fast.next == null) {
+            return null
+        }
+
+        slow = list
+        while (slow != fast) {
+            slow = slow?.next
+            fast = fast?.next
+        }
+
+        return slow
+    }
 
     private fun printResult(head: Node) {
         val builder = StringBuilder()

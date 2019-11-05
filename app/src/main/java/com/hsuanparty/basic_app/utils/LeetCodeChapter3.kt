@@ -6,4 +6,12 @@ package com.hsuanparty.basic_app.utils
  * Description:
  */
 class LeetCodeChapter3 {
+
+    fun start() {
+        // 3.1
+    }
+
+    companion object {
+        private const val TAG = "leetcode"
+    }
 }
