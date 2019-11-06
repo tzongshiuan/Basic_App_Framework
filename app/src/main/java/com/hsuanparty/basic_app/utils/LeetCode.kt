@@ -1,9 +1,5 @@
 package com.hsuanparty.basic_app.utils
 
-import android.util.Log
-import java.lang.StringBuilder
-import java.util.*
-
 /**
  * Author: Tsung Hsuan, Lai
  * Created on: 2019/11/1
@@ -13,16 +9,20 @@ class LeetCode {
 
     fun start() {
         // chapter 1
-        val ch1 = LeetCodeChapter1()
+//        val ch1 = LeetCodeChapter1()
 //        ch1.start()
 
         // chapter 2
-        val ch2 = LeetCodeChapter2()
-        ch2.start()
+//        val ch2 = LeetCodeChapter2()
+//        ch2.start()
 
         // chapter 3
-        val ch3 = LeetCodeChapter3
-//        ch3.start()
+        val ch3 = LeetCodeChapter3()
+        ch3.start()
+
+        // chapter 4
+//        val ch4 = LeetCodeChapter4()
+//        ch4.start()
     }
 
 //    private fun test {
