@@ -154,28 +154,50 @@ class LeetCodeChapter4 {
 //        Log.d(TAG, "tree2 is BST: ${checkBST(tree2)}")
 
         // 4.6 Successor
-        val node1 = TreeNode(1)
-        val node2 = TreeNode(2)
-        val node3 = TreeNode(3)
-        val node4 = TreeNode(4)
-        val node5 = TreeNode(5)
-        val node6 = TreeNode(6)
-        val node7 = TreeNode(7)
-        node4.left = node2
-        node4.right = node6
-        node2.left = node1
-        node2.right = node3
-        node6.left = node5
-        node6.right = node7
-        node2.parent = node4
-        node6.parent = node4
-        node1.parent = node2
-        node3.parent = node2
-        node5.parent = node6
-        node7.parent = node6
-        Log.d(TAG, "The next node of node6 is node${inOrderSucc(node6)?.data}")
-        Log.d(TAG, "The next node of node3 is node${inOrderSucc(node3)?.data}")
-        Log.d(TAG, "The next node of node7 is node${inOrderSucc(node7)?.data}")
+//        val node1 = TreeNode(1)
+//        val node2 = TreeNode(2)
+//        val node3 = TreeNode(3)
+//        val node4 = TreeNode(4)
+//        val node5 = TreeNode(5)
+//        val node6 = TreeNode(6)
+//        val node7 = TreeNode(7)
+//        node4.left = node2
+//        node4.right = node6
+//        node2.left = node1
+//        node2.right = node3
+//        node6.left = node5
+//        node6.right = node7
+//        node2.parent = node4
+//        node6.parent = node4
+//        node1.parent = node2
+//        node3.parent = node2
+//        node5.parent = node6
+//        node7.parent = node6
+//        Log.d(TAG, "The next node of node6 is node${inOrderSucc(node6)?.data}")
+//        Log.d(TAG, "The next node of node3 is node${inOrderSucc(node3)?.data}")
+//        Log.d(TAG, "The next node of node7 is node${inOrderSucc(node7)?.data}")
+
+        // 4.7 Build Order
+        val projects = arrayOf("a", "b", "c", "d", "e", "f")
+        val dependencies = arrayOf(
+                arrayOf("a", "d"), arrayOf("f", "b"), arrayOf("b", "d"), arrayOf("f", "a"), arrayOf("d", "c")
+            )
+        val stackOrder = findBuildOrder(projects, dependencies)
+        val builder = StringBuilder()
+        while (stackOrder?.isEmpty() == false) {
+            builder.append("${stackOrder.pop()} ")
+        }
+        Log.d(TAG, "Stack order is: $builder")
+
+        // 4.8 Find Common Ancestor
+
+        // 4.9 BST Sequences
+
+        // 4.10 Check Subtree
+
+        // 4.11 Random Node
+
+        // 4.12 Paths with Sum
     }
 
     // 4.1
@@ -405,8 +427,123 @@ class LeetCodeChapter4 {
     }
 
     // 4.6
-    private fun inOrderSucc(node: TreeNode?): TreeNode? {
+    private fun leftMostChild(node: TreeNode?): TreeNode? {
+        if (node == null) {
+            return null
+        }
+
+        var n = node
+        while (n?.left != null) {
+            n = n.left!!
+        }
+        return n
     }
+    private fun inOrderSucc(node: TreeNode?): TreeNode? {
+        if (node == null) {
+            return null
+        }
+
+        if (node.right != null) {
+            return leftMostChild(node.right)
+        } else {
+            var current = node
+            var parent = current.parent
+            while (parent != null && parent.left != current) {
+                current = parent
+                parent = parent.parent
+            }
+            return parent
+        }
+    }
+
+    // 4.7
+    class ProjectGraph {
+        val nodes = ArrayList<Project>()
+        val map = HashMap<String, Project>()
+
+        fun createNode(name: String) {
+            val node = Project(name)
+            nodes.add(node)
+            map[name] = node
+        }
+
+        fun addEdge(startName: String, endName: String) {
+            if (map.containsKey(startName) && map.containsKey(endName)) {
+                val start = map[startName]!!
+                val end = map[endName]!!
+                start.addNeighbor(end)
+            }
+        }
+    }
+    class Project(name: String) {
+        var name = name
+        var state = State.Unvisited
+        val children = ArrayList<Project>()
+
+        fun addNeighbor(node: Project) {
+            children.add(node)
+        }
+    }
+    private fun buildGraph(projects: Array<String>, dependencies: Array<Array<String>>): ProjectGraph {
+        val graph = ProjectGraph()
+
+        for (project in projects) {
+            graph.createNode(project)
+        }
+
+        for (dependency in dependencies) {
+            graph.addEdge(dependency[0], dependency[1])
+        }
+
+        return graph
+    }
+    private fun doDFS(project: Project, stack: Stack<Project>): Boolean {
+        if (project.state == State.Visiting) {
+            // circle
+            return false
+        }
+
+        if (project.state == State.Unvisited) {
+            project.state = State.Visiting
+
+            for (child in project.children) {
+                if (!doDFS(child, stack)) {
+                    return false
+                }
+            }
+
+            project.state = State.Visited
+            stack.push(project)
+        }
+
+        return true
+    }
+    private fun orderProjects(projects: ArrayList<Project>): Stack<Project>? {
+        val stack = Stack<Project>()
+
+        for (project in projects) {
+            if (project.state == State.Unvisited) {
+                if (!doDFS(project, stack)) {
+                    return null
+                }
+            }
+        }
+        return stack
+    }
+    private fun findBuildOrder(projects: Array<String>, dependencies: Array<Array<String>>): Stack<Project>? {
+        val graph = buildGraph(projects, dependencies)
+        return orderProjects(graph.nodes)
+    }
+
+    // 4.8
+
+    // 4.9
+
+    // 4.10
+
+    // 4.11
+
+    // 4.12
 
     companion object {
         private const val TAG = "leetcode"
