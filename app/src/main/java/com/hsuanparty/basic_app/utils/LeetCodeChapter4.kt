@@ -178,26 +178,133 @@ class LeetCodeChapter4 {
 //        Log.d(TAG, "The next node of node7 is node${inOrderSucc(node7)?.data}")
 
         // 4.7 Build Order
-        val projects = arrayOf("a", "b", "c", "d", "e", "f")
-        val dependencies = arrayOf(
-                arrayOf("a", "d"), arrayOf("f", "b"), arrayOf("b", "d"), arrayOf("f", "a"), arrayOf("d", "c")
-            )
-        val stackOrder = findBuildOrder(projects, dependencies)
-        val builder = StringBuilder()
-        while (stackOrder?.isEmpty() == false) {
-            builder.append("${stackOrder.pop()} ")
-        }
-        Log.d(TAG, "Stack order is: $builder")
+//        val projects = arrayOf("a", "b", "c", "d", "e", "f")
+//        val dependencies = arrayOf(
+//                arrayOf("a", "d"), arrayOf("f", "b"), arrayOf("b", "d"), arrayOf("f", "a"), arrayOf("d", "c")
+//            )
+//        val stackOrder = findBuildOrder(projects, dependencies)
+//        val builder = StringBuilder()
+//        while (stackOrder?.isEmpty() == false) {
+//            builder.append("${stackOrder.pop().name} ")
+//        }
+//        Log.d(TAG, "Stack order is: $builder")
 
         // 4.8 Find Common Ancestor
+//        val node1 = TreeNode(1)
+//        val node2 = TreeNode(2)
+//        val node3 = TreeNode(3)
+//        val node4 = TreeNode(4)
+//        val node5 = TreeNode(5)
+//        val node6 = TreeNode(6)
+//        val node7 = TreeNode(7)
+//        node4.left = node2
+//        node4.right = node6
+//        node2.left = node1
+//        node2.right = node3
+//        node6.left = node5
+//        node6.right = node7
+//        node2.parent = node4
+//        node6.parent = node4
+//        node1.parent = node2
+//        node3.parent = node2
+//        node5.parent = node6
+//        node7.parent = node6
+//        val commonAncestor = findCommonAncestor(node4, node1, node2)
+//        Log.d(TAG, "Common Ancestor between node1 and node2 is: node${commonAncestor?.data}")
+//        val commonAncestor2 = findCommonAncestor(node4, node7, node6)
+//        Log.d(TAG, "Common Ancestor between node7 and node6 is: node${commonAncestor2?.data}")
 
         // 4.9 BST Sequences
+//        val node1 = TreeNode(1)
+//        val node2 = TreeNode(2)
+//        val node3 = TreeNode(3)
+//        val node4 = TreeNode(4)
+//        val node5 = TreeNode(5)
+//        val node6 = TreeNode(6)
+//        val node7 = TreeNode(7)
+//        node4.left = node2
+//        node4.right = node6
+//        node2.left = node1
+//        node2.right = node3
+//        node6.left = node5
+//        node6.right = node7
+//        node2.parent = node4
+//        node6.parent = node4
+//        node1.parent = node2
+//        node3.parent = node2
+//        node5.parent = node6
+//        node7.parent = node6
+//        val sequences = allSequences(node4)
+//        for (list in sequences) {
+//            val builder = StringBuilder()
+//            for (i in list) {
+//                builder.append("$i ")
+//            }
+//            Log.d(TAG, "List: $builder")
+//        }
 
         // 4.10 Check Subtree
+//        val node1 = TreeNode(1)
+//        val node2 = TreeNode(2)
+//        val node3 = TreeNode(3)
+//        val node4 = TreeNode(4)
+//        val node5 = TreeNode(5)
+//        val node6 = TreeNode(6)
+//        val node7 = TreeNode(7)
+//        node4.left = node2
+//        node4.right = node6
+//        node2.left = node1
+//        node2.right = node3
+//        node6.left = node5
+//        node6.right = node7
+//        node2.parent = node4
+//        node6.parent = node4
+//        node1.parent = node2
+//        node3.parent = node2
+//        node5.parent = node6
+//        node7.parent = node6
+//        Log.d(TAG, "Is t1 has subtree t2: ${containsTree(node4, node6)}")
+//        Log.d(TAG, "Is t1 has subtree t2: ${containsTree(node2, node6)}")
 
         // 4.11 Random Node
+//        val node = RandomTreeNode(1)
+//        node.insertInOrder(2)
+//        node.insertInOrder(3)
+//        node.insertInOrder(4)
+//        node.insertInOrder(5)
+//        node.insertInOrder(6)
+//        node.insertInOrder(7)
+//
+//        Log.d(TAG, "Random tree node between 1-7: node${node.getRandomNode()?.data}")
+//        Log.d(TAG, "Random tree node between 1-7: node${node.getRandomNode()?.data}")
+//        Log.d(TAG, "Random tree node between 1-7: node${node.getRandomNode()?.data}")
+//        Log.d(TAG, "Random tree node between 1-7: node${node.getRandomNode()?.data}")
+//        Log.d(TAG, "Random tree node between 1-7: node${node.getRandomNode()?.data}")
 
         // 4.12 Paths with Sum
+        val node1 = TreeNode(1)
+        val node2 = TreeNode(2)
+        val node3 = TreeNode(3)
+        val node4 = TreeNode(4)
+        val node5 = TreeNode(5)
+        val node6 = TreeNode(6)
+        val node7 = TreeNode(7)
+        node4.left = node2
+        node4.right = node6
+        node2.left = node1
+        node2.right = node3
+        node6.left = node5
+        node6.right = node7
+        node2.parent = node4
+        node6.parent = node4
+        node1.parent = node2
+        node3.parent = node2
+        node5.parent = node6
+        node7.parent = node6
+
+        Log.d(TAG, "Paths count which have sum 3 is ${countPathsSum(node4, 3)}")    // 2
+        Log.d(TAG, "Paths count which have sum 5 is ${countPathsSum(node4, 5)}")    // 1
+        Log.d(TAG, "Paths count which have sum 13 is ${countPathsSum(node4, 13)}")  // 1
     }
 
     // 4.1
@@ -536,14 +643,263 @@ class LeetCodeChapter4 {
     }
 
     // 4.8
+    private fun depth(node: TreeNode?): Int {
+        var depth = 0
+        var n = node
+        while (n?.parent != null) {
+            n = n.parent
+            depth++
+        }
+        return depth
+    }
+    private fun goUpLevel(node: TreeNode?, delta: Int): TreeNode? {
+        var n = node
+        var d = delta
+
+        while (n != null) {
+            n = n.parent
+            d--
+        }
+        return n
+    }
+
+    private fun covers(root: TreeNode?, p: TreeNode?): Boolean {
+        if (root == null) {
+            return false
+        } else if (root == p) {
+            return true
+        }
+        return covers(root.left, p) || covers(root.right, p)
+    }
+    private fun getSibling(node: TreeNode?): TreeNode? {
+        if (node == null || node.parent == null) {
+            return null
+        }
+
+        val parent = node.parent
+
+        return if (parent?.left == node) parent.right else parent?.left
+    }
+
+    private fun findCommonAncestor(root: TreeNode?, p: TreeNode?, q: TreeNode?): TreeNode? {
+        // solution 1, is node has parent
+//        if (root == null || p == null || q == null) {
+//            return null
+//        }
+//        val delta = depth(p) - depth(q)
+//        var shallow: TreeNode? = if (delta < 0) p else q
+//        var deep: TreeNode? = if (delta < 0) q else p
+//        deep = goUpLevel(deep, Math.abs(delta))
+//
+//        while (shallow != deep && shallow != null && deep != null) {
+//            shallow = shallow.parent
+//            deep = deep.parent
+//        }
+//        return shallow
+
+        // solution 2, improved from (1)
+//        if (!covers(root, p) || !covers(root, q)) {
+//            return null
+//        } else if (covers(p, q)) {
+//            return p
+//        } else if (covers(q, p)) {
+//            return q
+//        }
+//
+//        var sibling = getSibling(p)
+//        var parent = p?.parent
+//
+//        while(!covers(sibling, q)) {
+//            sibling = getSibling(parent)
+//            parent = parent?.parent
+//        }
+//        return parent
+
+        // solution 3, no parent, find node covers both p and q
+        if (root == null) {
+            return null
+        }
+        if (p == q) {
+            return p
+        }
+
+        var left = findCommonAncestor(root.left, p, q)
+        if (left != null && left != p && left != q) {
+            return left
+        }
+
+        var right = findCommonAncestor(root.right, p, q)
+        if (right != null && right != p && right != q) {
+            return right
+        }
+
+        if (left != null && right != null) {
+            return root  // find common ancestor
+        } else if (root == p || root == q) {
+            return root  // 向上傳遞
+        } else {
+            return if (left == null) right else left
+        }
+    }
 
     // 4.9
+    // weave function
+    private fun weaveLists(left: LinkedList<Int>, right: LinkedList<Int>,
+                           weaved: ArrayList<LinkedList<Int>>, prefix: LinkedList<Int>) {
+        if (left.size == 0 || right.size == 0) {
+            val result = prefix.clone() as LinkedList<Int>
+            result.addAll(left)
+            result.addAll(right)
+            weaved.add(result)
+            return
+        }
+
+        val headFirst = left.removeFirst()
+        prefix.addLast(headFirst)
+        weaveLists(left, right, weaved, prefix)
+        prefix.removeLast()
+        left.addFirst(headFirst)
+
+        val headSecond = right.removeFirst()
+        prefix.addLast(headSecond)
+        weaveLists(left, right, weaved, prefix)
+        prefix.removeLast()
+        right.addFirst(headSecond)
+    }
+    // weave array of subtrees of both side
+    private fun allSequences(root: TreeNode?): ArrayList<LinkedList<Int>> {
+        val result = ArrayList<LinkedList<Int>>()
+
+        if (root == null) {
+            result.add(LinkedList<Int>())
+            return result
+        }
+
+        val prefix = LinkedList<Int>()
+        prefix.add(root.data)
+
+        val leftSeq = allSequences(root.left)
+        val rightSeq = allSequences(root.right)
+
+        for (left in leftSeq) {
+            for (right in rightSeq) {
+                val weaved = ArrayList<LinkedList<Int>>()
+                weaveLists(left, right, weaved, prefix)
+                result.addAll(weaved)
+            }
+        }
+
+        return result
+    }
 
     // 4.10
+    private fun getOrderString(root: TreeNode?, builder: StringBuilder) {
+        if (root == null) {
+            builder.append("X")
+            return
+        }
+
+        builder.append(root.data)
+        getOrderString(root.left, builder)
+        getOrderString(root.right, builder)
+    }
+    private fun matchTree(t1: TreeNode?, t2: TreeNode?): Boolean {
+        if (t1 == null && t2 == null) {
+            return true
+        } else if (t1 == null || t2 == null) {
+            return false
+        } else if (t1.data != t2.data) {
+            return false
+        }
+
+        return matchTree(t1.left, t2.left) && matchTree(t1.right, t2.right)
+    }
+    private fun subTree(t1: TreeNode?, t2: TreeNode?): Boolean {
+        if (t1 == null) {
+            return false
+        }
+
+        if (t1.data == t2?.data && matchTree(t1, t2)) {
+            return true
+        }
+
+        return subTree(t1.left, t2) || subTree(t1.right, t2)
+    }
+    private fun containsTree(t1: TreeNode?, t2: TreeNode?): Boolean {
+        // solution 1, Tag null node + pre-order
+//        val string1 = StringBuilder()
+//        val string2 = StringBuilder()
+//
+//        getOrderString(t1, string1)
+//        getOrderString(t2, string2)
+//
+//        return string1.contains(string2.toString())
+
+        // solution 2, find node in t1 and compare
+        if (t2 == null) {
+            return true
+        }
+        return subTree(t1, t2)
+    }
 
     // 4.11
+    class RandomTreeNode(value: Int) {
+        var data = value
+        var size = 1
+        var left: RandomTreeNode? = null
+        var right: RandomTreeNode? = null
+
+        fun getRandomNode(): RandomTreeNode? {
+            val leftSize = left?.size ?: 0
+            val random = Random()
+            val index = random.nextInt(size)
+
+            if (index < leftSize) {
+                return left?.getRandomNode()
+            } else if (index == leftSize) {
+                return this
+            } else {
+                return right?.getRandomNode()
+            }
+        }
+
+        fun insertInOrder(d: Int) {
+            if (d <= data) {
+                if (left == null) {
+                    left = RandomTreeNode(d)
+                } else {
+                    left?.insertInOrder(d)
+                }
+            } else {
+                if (right == null) {
+                    right = RandomTreeNode(d)
+                } else {
+                    right?.insertInOrder(d)
+                }
+            }
+            size++
+        }
+
+        fun find(d: Int): RandomTreeNode? {
+            if (d == data) {
+                return this
+            } else if (d <= data) {
+                return left?.find(d)
+            } else if (d > data) {
+                return right?.find(d)
+            }
+            return null
+        }
+    }
 
     // 4.12
+    fun countPathsSum(root: TreeNode?, targetSum: Int): Int {
+        // solution 1, Brute Force
+
+        // solution 2, Optimized
+
+        return 0
+    }
 
     companion object {
         private const val TAG = "leetcode"
