@@ -3,6 +3,7 @@ package com.hsuanparty.basic_app.utils
 import android.util.Log
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 /**
  * Author: Tsung Hsuan, Lai
@@ -302,9 +303,9 @@ class LeetCodeChapter4 {
         node5.parent = node6
         node7.parent = node6
 
-        Log.d(TAG, "Paths count which have sum 3 is ${countPathsSum(node4, 3)}")    // 2
-        Log.d(TAG, "Paths count which have sum 5 is ${countPathsSum(node4, 5)}")    // 1
-        Log.d(TAG, "Paths count which have sum 13 is ${countPathsSum(node4, 13)}")  // 1
+        Log.d(TAG, "Paths count which have sum 3 is ${countPathSum(node4, 3)}")    // 2
+        Log.d(TAG, "Paths count which have sum 5 is ${countPathSum(node4, 5)}")    // 1
+        Log.d(TAG, "Paths count which have sum 13 is ${countPathSum(node4, 13)}")  // 1
     }
 
     // 4.1
@@ -893,12 +894,64 @@ class LeetCodeChapter4 {
     }
 
     // 4.12
-    fun countPathsSum(root: TreeNode?, targetSum: Int): Int {
+    private fun countPathSumFromNode(root: TreeNode?, targetSum: Int, currentSum: Int): Int {
+        if (root == null) {
+            return 0
+        }
+
+        var pathCount = 0
+        val sum = currentSum + root.data
+
+        if (sum == targetSum) {
+            pathCount++
+        }
+
+        val pathsLeft = countPathSumFromNode(root.left, targetSum, sum)
+        val pathsRight = countPathSumFromNode(root.right, targetSum, sum)
+        return pathCount + pathsLeft + pathsRight
+    }
+    private fun incrementMap(pathMap: HashMap<Int, Int>, key: Int, delta: Int) {
+        val count = pathMap.getOrDefault(key, 0) + delta
+
+        if (count == 0) {
+            pathMap.remove(key)
+        } else {
+            pathMap.put(key, count)
+        }
+    }
+    private fun countPathSum(root: TreeNode?, targetSum: Int, runningSum: Int, pathMap: HashMap<Int, Int>): Int {
+        if (root == null) {
+            return 0
+        }
+
+        var currentSum = runningSum + root.data
+        var sum = currentSum - targetSum
+        var pathCount = pathMap.getOrDefault(sum, 0)
+
+        if (currentSum == targetSum) {
+            pathCount++
+        }
+
+        incrementMap(pathMap, currentSum, 1)
+        pathCount += countPathSum(root.left, targetSum, currentSum, pathMap)
+        pathCount += countPathSum(root.right, targetSum, currentSum, pathMap)
+        incrementMap(pathMap, currentSum, -1)
+
+        return pathCount
+    }
+    private fun countPathSum(root: TreeNode?, targetSum: Int): Int {
         // solution 1, Brute Force
+//        if (root == null) {
+//            return 0
+//        }
+//
+//        val pathsFromRoot = countPathSumFromNode(root, targetSum, 0)
+//        val pathsLeft = countPathSum(root.left, targetSum)
+//        val pathsRight = countPathSum(root.right, targetSum)
+//        return pathsFromRoot + pathsLeft + pathsRight
 
-        // solution 2, Optimized
-
-        return 0
+        // solution 2, record running sum
+        return countPathSum(root, targetSum, 0, HashMap<Int, Int>())
     }
 
     companion object {
