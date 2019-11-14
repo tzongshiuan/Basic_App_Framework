@@ -52,22 +52,37 @@ class LeetCodeChapter8 {
 //        Log.d(TAG, "Get magic index: ${magicIndex(array)}")
 
         // 8.4 Power Set
-        val array = ArrayList<Int>(4)
-        array.add(0)
-        array.add(1)
-        array.add(2)
-        array.add(3)
-        array.add(4)
-        array.add(5)
-        array.add(6)
-        val allSubsets = getSubsets(array)
-        var index = 1
-        for (set in allSubsets) {
-            val builder = StringBuilder()
-            for (value in set) {
-                builder.append("$value ")
-            }
-            Log.d(TAG, "[${index++}]Possible subset is: [$builder]")
+//        val array = ArrayList<Int>(4)
+//        array.add(0)
+//        array.add(1)
+//        array.add(2)
+//        array.add(3)
+//        array.add(4)
+//        array.add(5)
+//        array.add(6)
+//        val allSubsets = getSubsets(array)
+//        var index = 1
+//        for (set in allSubsets) {
+//            val builder = StringBuilder()
+//            for (value in set) {
+//                builder.append("$value ")
+//            }
+//            Log.d(TAG, "[${index++}]Possible subset is: [$builder]")
+//        }
+
+        // 8.5 Recursive Multiply
+//        Log.d(TAG, "33 * 17 = ${minProduct(33, 17)}")
+
+        // 8.7 Permutations without Dups
+//        val result = getPerms("abcd")
+//        for (i in result.indices) {
+//            Log.d(TAG, "Permutations of abcd is: ${result[i]}")
+//        }
+
+        // 8.7 Permutations with Duplicates
+        val result = getPerms("aabbcc")
+        for (i in result.indices) {
+            Log.d(TAG, "Permutations of abcd is: ${result[i]}")
         }
     }
 
@@ -182,15 +197,81 @@ class LeetCodeChapter8 {
         return allSubsets
     }
     private fun convertIntToSet(k: Int, set: ArrayList<Int>): ArrayList<Int> {
+        var index = 0
+        var bits = k
         val subset = ArrayList<Int>()
+
+        while (bits != 0) {
+            if (bits and 1 != 0) {
+                subset.add(set[index])
+            }
+            index++
+            bits = bits shr 1
+        }
 
         return subset
     }
     private fun getSubsets(set: ArrayList<Int>): ArrayList<ArrayList<Int>> {
         // recursive
-        return getSubsets(set, 0)
+//        return getSubsets(set, 0)
 
         // iterative
+        val allSubsets = ArrayList<ArrayList<Int>>()
+        val max = 1 shl set.size
+        for (k in 0 until max) {
+            val subset = convertIntToSet(k, set)
+            allSubsets.add(subset)
+        }
+        return allSubsets
+    }
+
+    // 8.5
+    private fun minProductHelper(smaller: Int, bigger: Int): Int {
+        if (smaller == 0) {
+            return 0
+        }
+        if (smaller == 1) {
+            return bigger
+        }
+
+        val s = smaller shr 1
+        val half = minProductHelper(s, bigger)
+
+        if (smaller % 2 == 0) {
+            return half + half
+        } else {
+            return half + half + bigger
+        }
+    }
+    private fun minProduct(a: Int, b: Int): Int {
+        val bigger = if (a < b) b else a
+        val smaller = if (a < b) a else b
+        return minProductHelper(smaller, bigger)
+    }
+
+    // 8.7
+    private fun getPerms(prefix: String, str: String, result: ArrayList<String>) {
+        if (str.isEmpty()) {
+            result.add(prefix)
+            return
+        }
+
+        for (i in str.indices) {
+            val c = str[i]
+            val before = str.substring(0, i)
+            val after = str.substring(i+1, str.length)
+            getPerms(prefix + c, before + after, result)
+        }
+    }
+    private fun getPerms(str: String): ArrayList<String> {
+        val result = ArrayList<String>()
+        getPerms("", str, result)
+        return result
+    }
+
+    // 8.8
+    private fun getDupPerms(str: String): ArrayList<String> {
+        val map = HashMap<Char, Int>()
     }
 
     companion object {
