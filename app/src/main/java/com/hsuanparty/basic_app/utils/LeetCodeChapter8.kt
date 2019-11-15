@@ -79,11 +79,37 @@ class LeetCodeChapter8 {
 //            Log.d(TAG, "Permutations of abcd is: ${result[i]}")
 //        }
 
-        // 8.7 Permutations with Duplicates
-        val result = getPerms("aabbcc")
-        for (i in result.indices) {
-            Log.d(TAG, "Permutations of abcd is: ${result[i]}")
-        }
+        // 8.8 Permutations with Duplicates
+//        val result = getDupPerms("aabbcc")
+//        for (i in result.indices) {
+//            Log.d(TAG, "Permutations of abcd is: ${result[i]}")
+//        }
+
+        // 8.9 Parentheses
+//        val result = generateParens(4)
+//        Log.d(TAG, "Instance count: ${result.size}")
+//        for (i in result.indices) {
+//            Log.d(TAG, "Instance of 4 parentheses: ${result[i]}")
+//        }
+
+        // 8.10 Paint Fill
+//        val screen = Array<Array<Color>>(5) {
+//            Array<Color>(5) {
+//                Color.Black
+//            }
+//        }
+//        printScreen(screen)
+//        paintFill(screen, 2, 2, Color.White)
+//        printScreen(screen)
+//        paintFill(screen, 2, 2, Color.Red)
+//        printScreen(screen)
+
+        // 8.11 Coins
+//        Log.d(TAG, "Count ways of 10: ${makeChange(10)}")
+//        Log.d(TAG, "Count ways of 100: ${makeChange(100)}")
+
+        // 8.13 Stack of Boxes
+
     }
 
     // 8.1
@@ -270,9 +296,171 @@ class LeetCodeChapter8 {
     }
 
     // 8.8
-    private fun getDupPerms(str: String): ArrayList<String> {
-        val map = HashMap<Char, Int>()
+    private fun getDupPerms(map: HashMap<Char, Int>, prefix: String,
+                            remaining: Int, result: ArrayList<String>) {
+        if (remaining == 0) {
+            result.add(prefix)
+            return
+        }
+
+        for (c in map.keys) {
+            val count = map[c] ?: 0
+            if (count > 0) {
+                map[c] = count - 1
+                getDupPerms(map, prefix + c, remaining - 1, result)
+                map[c] = count
+            }
+        }
     }
+    private fun getDupPerms(str: String): ArrayList<String> {
+        val result = ArrayList<String>()
+        val map = HashMap<Char, Int>()
+        for (i in str.indices) {
+            val c = str[i]
+            if (!map.contains(c)) {
+                map[c] = 0
+            }
+
+            map[c] = (map[c] ?: 0) + 1
+        }
+        getDupPerms(map, "", str.length, result)
+        return result
+    }
+
+    // 8.9
+    private fun addParen(list: ArrayList<String>, leftRem: Int, rightRem: Int,
+                         array: CharArray, index: Int) {
+        if (leftRem < 0 || leftRem > rightRem) {
+            return
+        }
+
+        if (leftRem == 0 && rightRem == 0) {
+            list.add(array.joinToString(" "))
+        } else {
+            array[index] = '('
+            addParen(list, leftRem-1, rightRem, array, index+1)
+
+            array[index] = ')'
+            addParen(list, leftRem, rightRem-1, array, index+1)
+        }
+    }
+    private fun generateParens(count: Int): ArrayList<String> {
+        val list = ArrayList<String>()
+        var array = CharArray(count*2)
+        addParen(list, count, count, array, 0)
+        return list
+    }
+
+    // 8.10
+    enum class Color { Black, White, Red }
+    private fun printScreen(screen: Array<Array<Color>>) {
+        Log.d(TAG, "printScreen()")
+        for (i in screen.indices) {
+            val list = screen[i]
+            val builder = StringBuilder()
+            for (color in list) {
+                when (color) {
+                    Color.Black -> builder.append("0 ")
+                    Color.White -> builder.append("1 ")
+                    Color.Red -> builder.append("2 ")
+                }
+            }
+            Log.d(TAG, "$i, Color: $builder")
+        }
+    }
+    private fun paintFill(screen: Array<Array<Color>>, r: Int, c: Int,
+                          oColor: Color, nColor: Color): Boolean {
+        if (r < 0 || c < 0 || r >= screen.size || c >= screen[0].size) {
+            return false
+        }
+
+        if (screen[r][c] == oColor) {
+            screen[r][c] = nColor
+
+            paintFill(screen, r-1, c, oColor, nColor)
+            paintFill(screen, r+1, c, oColor, nColor)
+            paintFill(screen, r, c-1, oColor, nColor)
+            paintFill(screen, r, c+1, oColor, nColor)
+        }
+
+        return true
+    }
+    private fun paintFill(screen: Array<Array<Color>>, r: Int, c: Int, nColor: Color): Boolean {
+        if (screen[r][c] == nColor) {
+            return false
+        }
+        return paintFill(screen, r, c, screen[r][c], nColor)
+    }
+
+    // 8.11
+    private fun makeChange(n: Int, denom: IntArray, index: Int, map: Array<IntArray>): Int {
+        if (map[n][index] > 0) {
+            return map[n][index]
+        }
+
+        if (index >= denom.size - 1) {
+            return 1
+        }
+
+        var ways = 0
+        var denomAmount = denom[index]
+        var count = 0
+        while (count <= n) {
+            val remaining = n - count
+            ways += makeChange(remaining, denom, index + 1, map)
+            count += denomAmount
+        }
+
+        map[n][index] = ways
+        return ways
+    }
+    private fun makeChange(n: Int): Int {
+        val denom = intArrayOf(25, 10, 5, 1)
+        val map = Array<IntArray>(n+1) { IntArray(denom.size) }
+        return makeChange(n , denom, 0, map)
+    }
+
+    // 8.13
+    class Box(w: Int, h: Int, d: Int): Comparable<Box> {
+        override fun compareTo(other: Box): Int {
+            return other.height - height
+        }
+
+        var width = w
+        var height = h
+        var depth = d
+
+        fun canBeAbove(box: Box): Boolean {
+            return (box.width < this.width)
+                    && (box.height < this.height)
+                    && (box.depth < this.depth)
+        }
+    }
+    private fun createStack(boxes: ArrayList<Box>, bottom: Box?, offset: Int, stackMap: IntArray): Int {
+        if (offset >= boxes.size) {
+            return 0
+        }
+
+        val newBottom = boxes[offset]
+        var heightWithBottom = 0
+        if (bottom == null || newBottom.canBeAbove(bottom)) {
+            if (stackMap[offset] == 0) {
+                stackMap[offset] = createStack(boxes, newBottom, offset+1, stackMap)
+                stackMap[offset] += newBottom.height
+            }
+            heightWithBottom = stackMap[offset]
+        }
+
+        val heightWithout = createStack(boxes, bottom, offset+1, stackMap)
+
+        return Math.max(heightWithBottom, heightWithout)
+    }
+    private fun createStack(boxes: ArrayList<Box>): Int {
+        boxes.sort()
+        val stackMap = IntArray(boxes.size)
+        return createStack(boxes, null, 0, stackMap)
+    }
+
 
     companion object {
         private const val TAG = "leetcode"

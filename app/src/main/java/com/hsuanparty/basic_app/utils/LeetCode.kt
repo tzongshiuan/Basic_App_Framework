@@ -33,8 +33,12 @@ class LeetCode {
 //        ch7.start()
 
         // chapter 8
-        val ch8 = LeetCodeChapter8()
-        ch8.start()
+//        val ch8 = LeetCodeChapter8()
+//        ch8.start()
+
+        // chapter 10
+        val ch10 = LeetCodeChapter10()
+        ch10.start()
     }
 
 //    private fun test {
