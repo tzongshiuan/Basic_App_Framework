@@ -79,6 +79,92 @@ class LeetCodeChapter10 {
         Log.d(TAG, "After peak and valley sort, result: $builder")
     }
 
+    private fun quickSort2(nums: IntArray) {
+        if (nums.size <= 1) {
+            return
+        }
+
+        quickSort2(nums, 0, nums.size-1)
+    }
+    private fun quickSort2(nums: IntArray, start: Int, end: Int) {
+        if (start >= end) {
+            return
+        }
+
+        var pivot = nums[end]
+        var index = 0
+
+        for (i in 0 until nums.size-1) {
+            if (nums[i] < pivot) {
+                val temp = nums[i]
+                nums[i] = nums[index]
+                nums[index] = temp
+
+                index++
+            }
+        }
+
+        val temp = nums[index]
+        nums[index] = nums[end]
+        nums[end] = temp
+
+        quickSort2(nums, start, index-1)
+        quickSort2(nums, index+1, end)
+    }
+    private fun mergeSort2(nums: IntArray) {
+        if (nums.size <= 1) {
+            return
+        }
+        mergeSort2(nums, 0, nums.size-1)
+    }
+    private fun mergeSort2(nums: IntArray, start: Int, end: Int) {
+        if (start >= end) {
+            return
+        }
+
+        val mid = (start + end) / 2
+        mergeSort2(nums, start, mid)
+        mergeSort2(nums, mid+1, end)
+        merge(nums, start, mid, end)
+    }
+    private fun merge(nums: IntArray, start: Int, mid: Int, end: Int) {
+        val leftArray = IntArray(mid - start + 1)
+        val rightArray = IntArray(end - mid)
+
+        for (i in leftArray.indices) {
+            leftArray[i] = nums[start + i]
+        }
+        for (i in rightArray.indices) {
+            rightArray[i] = nums[mid + 1 + i]
+        }
+
+        var index = start
+        var leftIndex = 0
+        var rightIndex = 0
+        while (leftIndex < leftArray.size && rightIndex < rightArray.size) {
+            if (leftArray[leftIndex] < rightArray[rightIndex]) {
+                nums[index] = leftArray[leftIndex]
+                leftIndex++
+            } else {
+                nums[index] = rightArray[rightIndex]
+                rightIndex++
+            }
+            index++
+        }
+
+        while (leftIndex < leftArray.size) {
+            nums[index] = leftArray[leftIndex]
+            leftIndex++
+            index++
+        }
+
+        while (rightIndex < rightArray.size) {
+            nums[index] = rightArray[rightIndex]
+            rightIndex++
+            index++
+        }
+    }
+
     private fun mergeSort(array: IntArray) {
         val helper = IntArray(array.size)
         mergeSort(array, helper, 0, array.size - 1)
