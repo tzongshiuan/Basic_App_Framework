@@ -1,6 +1,7 @@
 package com.hsuanparty.basic_app.view.ui
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +41,8 @@ class MainActivityFragment : Fragment(), Injectable {
         mBinding = FragmentMainBinding.inflate(inflater, container, false)
         initUI()
         initSetting()
+
+        mBinding.customView.circleColor = Color.GREEN
 
         return mBinding.root
     }
