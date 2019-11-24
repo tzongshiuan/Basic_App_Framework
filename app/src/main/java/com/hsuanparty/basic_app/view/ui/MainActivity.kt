@@ -18,10 +18,7 @@ import com.hsuanparty.basic_app.BuildConfig
 import com.hsuanparty.basic_app.R
 import com.hsuanparty.basic_app.di.Injectable
 import com.hsuanparty.basic_app.model.PreferencesHelper
-import com.hsuanparty.basic_app.utils.Constants
-import com.hsuanparty.basic_app.utils.LeetCode
-import com.hsuanparty.basic_app.utils.LogMessage
-import com.hsuanparty.basic_app.utils.SimpleDelayTask
+import com.hsuanparty.basic_app.utils.*
 import com.hsuanparty.basic_app.utils.networkChecker.NetworkChangeReceiver
 import com.hsuanparty.basic_app.utils.networkChecker.NetworkState
 import dagger.android.DispatchingAndroidInjector
@@ -110,6 +107,9 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Injectable
 
         val leetCode = LeetCode()
         leetCode.start()
+
+        val rxjava = RxJavaTest()
+        rxjava.test()
     }
 
     override fun onStart() {
