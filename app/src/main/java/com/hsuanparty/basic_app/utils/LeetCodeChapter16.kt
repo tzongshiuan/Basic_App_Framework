@@ -13,47 +13,99 @@ class LeetCodeChapter16 {
     fun start() {
         Log.d(TAG, "start()")
 
-        Log.d(TAG, "result = ${multiply("123", "456")}")
+        // 16.1 Number Swapper
+//        val a = 4
+//        val b = 9
+//        numberSwapper(a, b)
 
-        val str = "abcde"
-        val chars = str.toCharArray()
-        chars.sort()
-        val sort = chars.joinToString("")
+        // 16.6 Smallest Difference
+//        val array1 = intArrayOf(1, 3, 15, 11, 2)
+//        val array2 = intArrayOf(23, 127, 245, 19, 8)
+//        val result = findSmallestDiff(array1, array2)
+//        Log.d(TAG, "Smallest Difference: $result")
 
-        val list = ArrayList<IntArray>()
+        // 16.17 Contiguous Sequence
+//        val array = intArrayOf(2, -8, 3, -2, 4, -10)
+//        Log.d(TAG, "Maximum contiguous num: ${getMaxContiNum(array)}")
 
-        val result = Array<IntArray>(list.size) { IntArray(2) }
-        list.toArray(result)
+        // 16.21 Sum Swap
+        val array1 = intArrayOf(4, 1, 2, 1, 1, 2)
+        val array2 = intArrayOf(3, 6, 3, 3)
+        val result = findSwapValue(array1, array2)
+        Log.d(TAG, "${result[0]}")
+        Log.d(TAG, "${result[1]}")
     }
 
-    fun multiply(num1: String, num2: String): String {
-        val len1 = num1.length
-        val len2 = num2.length
-        val mul = IntArray(len1 + len2)
+    // 16.1
+    private fun numberSwapper(a: Int, b: Int) {
+//        var n1 = b - a
+//        var n2 = b - n1
+//        n1 += n2
 
-        for (i in (len1-1) downTo 0) {
-            for (j in (len2-1) downTo 0) {
-                val a = num1[i] - '0'
-                val b = num2[j] - '0'
+        var n1 = a xor b
+        var n2 = n1 xor b
+        n1 = n1 xor n2
 
-                val sum = a * b + mul[i + j + 1]
+        Log.d(TAG, "n1: $n1, n2: $n2")
+    }
 
-                mul[i + j + 1] += sum % 10
-                mul[i + j] += sum / 10
+    // 16.6
+    private fun findSmallestDiff(array1: IntArray, array2: IntArray): Int {
+        if (array1.isEmpty() || array2.isEmpty()) {
+            return -1
+        }
+
+        array1.sort()
+        array2.sort()
+
+        var index1 = 0
+        var index2 = 0
+        var min = Int.MAX_VALUE
+
+        while (index1 < array1.size && index2 < array2.size) {
+            val diff = Math.abs(array1[index1] - array2[index2])
+            if (diff < min) {
+                min = diff
+            }
+
+            if (min == 0) {
+                break
+            }
+
+            if (array1[index1] < array2[index2]) {
+                index1++
+            } else {
+                index2++
             }
         }
 
-        val builder = StringBuilder()
-
-        if (mul[0] != 0) {
-            builder.append(mul[0])
-        }
-        for (i in 1 until mul.size) {
-            builder.append(mul[i])
-        }
-
-        return builder.toString()
+        return min
     }
+
+    // 16.17
+    private fun getMaxContiNum(array: IntArray): Int {
+        var maxSum = 0
+        var sum = 0
+
+        for (i in array.indices) {
+            sum += array[i]
+            if (sum > maxSum) {
+                maxSum = sum
+            }
+
+            if (sum < 0) {
+                sum = 0
+            }
+        }
+
+        return maxSum
+    }
+
+    // 16.21
+    private fun findSwapValue(array1: IntArray, array2: IntArray): IntArray {
+        return intArrayOf(-1, -1)
+    }
+
 
     companion object {
         private const val TAG = "leetcode"
