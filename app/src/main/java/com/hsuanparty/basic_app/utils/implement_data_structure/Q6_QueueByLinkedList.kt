@@ -1,5 +1,7 @@
 package com.hsuanparty.basic_app.utils.implement_data_structure
 
+import java.util.*
+
 /**
  * Author: Tsung Hsuan, Lai
  * Created on: 2019/11/28
@@ -17,13 +19,40 @@ class Q6_QueueByLinkedList {
     var currentSize = 0
 
     fun add(value: Int) {
+        val node = Node(value)
 
+        if (rear == null) {
+            rear = node
+            front = node
+        } else {
+            rear?.next = node
+            rear = rear?.next
+        }
+
+        currentSize++
     }
 
-    fun remove(): Int {
-        
+    fun remove(): Int? {
+        if (isEmpty()) {
+            throw EmptyStackException()
+        }
+
+        val value = front?.data
+        front = front?.next
+        currentSize--
+
+        return value
+    }
+
+    fun peek(): Int? {
+        if (isEmpty()) {
+            throw EmptyStackException()
+        }
+
+        return front?.data
     }
 
     fun isEmpty(): Boolean {
+        return currentSize == 0
     }
 }
