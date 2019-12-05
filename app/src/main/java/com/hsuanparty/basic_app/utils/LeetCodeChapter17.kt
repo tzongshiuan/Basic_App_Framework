@@ -1,6 +1,10 @@
 package com.hsuanparty.basic_app.utils
 
 import android.util.Log
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+import kotlin.collections.HashSet
 
 /**
  * Author: Tsung Hsuan, Lai
@@ -18,6 +22,9 @@ class LeetCodeChapter17 {
         Log.d(TAG, "Median is: ${findMedianSortedArrays(array1, array2)}")
 
         // 17.2 clone graph
+        val set = HashSet<Int>(5)
+        set.add(5)
+        set.contains(5)
     }
 
     // 17.1

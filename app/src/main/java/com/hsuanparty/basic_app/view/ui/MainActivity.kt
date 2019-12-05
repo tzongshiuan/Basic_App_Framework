@@ -5,9 +5,11 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -23,7 +25,9 @@ import com.hsuanparty.basic_app.utils.networkChecker.NetworkChangeReceiver
 import com.hsuanparty.basic_app.utils.networkChecker.NetworkState
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.HashMap
 
 
 /**
@@ -110,6 +114,42 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Injectable
 
         val rxjava = RxJavaTest()
         rxjava.test()
+
+        val map = HashMap<Char, Boolean>()
+        map.put('c', false)
+        map.remove('c')
+        val s = "123".intern()
+
+//        val queue = ArrayDeque<Int>()
+//        queue.push(6)
+
+//        val hsuan = Hsuan()
+//        val method = hsuan.javaClass.getDeclaredMethod("getName", String::class.java)
+//        method.invoke(hsuan, "YYYYYYYYYYYYYY")
+//
+//        val heap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            PriorityQueue<Int> { n1, n2 -> n1 - n2}
+//        } else {
+//            TODO("VERSION.SDK_INT < N")
+//        }
+//        heap.poll()
+//
+//        val list = ArrayList<Int>()
+//        list.reverse()
+
+//        val array = Array<IntArray>(4) {
+//            IntArray(2)
+//        }
+//        array[0] = intArrayOf(1, 3)
+//        array[1] = intArrayOf(2, 6)
+//        array[2] = intArrayOf(8, 10)
+//        val a = intArrayOf(15, 18)
+    }
+
+    open class Hsuan {
+        open fun getName(str: String) {
+            Log.d("1212", "GGGGGGGGGGGGGGGGGGGGGGGG $str")
+        }
     }
 
     override fun onStart() {
