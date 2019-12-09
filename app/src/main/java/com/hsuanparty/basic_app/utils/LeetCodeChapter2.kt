@@ -151,9 +151,10 @@ class LeetCodeChapter2 {
 
             while (runner?.next != null) {
                 if (runner.next?.data == current.data) {
-                    current.next = runner.next?.next
+                    runner.next = runner.next?.next
+                } else {
+                    runner = runner.next
                 }
-                runner = runner.next
             }
 
             current = current.next
@@ -176,9 +177,9 @@ class LeetCodeChapter2 {
 //        }
 //        return node
 
+        var p2: Node? = head
         // solution 2, iterative
         var p1: Node? = head
-        var p2: Node? = head
 
         for (i in 0 until k) {
             if (p1 == null) {
@@ -525,7 +526,7 @@ class LeetCodeChapter2 {
         var tail2: Info? = getTailAndSize(list2)
 
         // check tail pointer
-        if (tail1 != tail2) {
+        if (tail1?.tail != tail2?.tail) {
             return null
         }
 
@@ -536,7 +537,7 @@ class LeetCodeChapter2 {
             longer = longer?.next
         }
 
-        if (shorter != longer) {
+        while (shorter != longer) {
             shorter = shorter?.next
             longer = longer?.next
         }
