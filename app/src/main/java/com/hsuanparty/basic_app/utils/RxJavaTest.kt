@@ -4,13 +4,10 @@ import android.util.Log
 import io.reactivex.*
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
-import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
 import io.reactivex.observables.GroupedObservable
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.schedulers.Timed
 import java.util.concurrent.TimeUnit
-import javax.security.auth.Subject
 
 class RxJavaTest {
 
